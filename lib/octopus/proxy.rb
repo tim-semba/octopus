@@ -254,6 +254,18 @@ module Octopus
       end
     end
 
+    def establish_connection(*args)
+      ActiveRecord::Base.connection_pool_without_octopus.establish_connection(*args)
+    end
+
+    def create_database(*args)
+      ActiveRecord::Base.connection_pool_without_octopus.connection.create_database(*args)
+    end
+
+    def drop_database(*args)
+      ActiveRecord::Base.connection_pool_without_octopus.connection.drop_database(*args)
+    end
+
     def method_missing(method, *args, &block)
       if should_clean_connection_proxy?(method)
         conn = select_connection
